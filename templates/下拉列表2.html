@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+element.style {/*下拉列表的CSS*/
+    width: 150px;
+}
+.ch-select {/*下拉列表的CSS*/
+    box-sizing: border-box;
+    height: 40px;
+    line-height: 40px;
+    color: #666;
+    border: 1px solid #d6d6d6;
+    padding: 0 8px;
+    font-size: 14px;
+    margin-right: 10px;
+    border-radius: 0;
+    outline: 0;
+    background: #fff;
+}
+.ch-input { /* 输入框样式 */
+    box-sizing: border-box;
+    padding: 0 10px;
+    border: 1px solid #d6d6d6;
+    height: 40px;
+    line-height: 40px;
+    color: #666;
+    font-size: 14px;
+    margin-right: 10px;
+    border-radius: 2px;
+}
+.blue-btn { /* 查询按钮 */
+    box-sizing: border-box;
+    height: 40px;
+    line-height: 40px;
+    background: #1887e0;
+    border: 1px solid #1887e0;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 26px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+</style>
+<body>
+<div class="ch-filter">
+        <form name="form2" method="post" id="form2" action="/zsml/queryAction.do">
+            <select class="ch-select" name="ssdm" id="ssdm" style="width: 150px;"><option value="">--选择省市--</option><option value="11">(11)北京市</option><option value="12">(12)天津市</option><option value="13">(13)河北省</option><option value="14">(14)山西省</option><option value="15">(15)内蒙古自治区</option><option value="21">(21)辽宁省</option><option value="22">(22)吉林省</option><option value="23">(23)黑龙江省</option><option value="31">(31)上海市</option><option value="32">(32)江苏省</option><option value="33">(33)浙江省</option><option value="34">(34)安徽省</option><option value="35">(35)福建省</option><option value="36">(36)江西省</option><option value="37">(37)山东省</option><option value="41">(41)河南省</option><option value="42">(42)湖北省</option><option value="43">(43)湖南省</option><option value="44">(44)广东省</option><option value="45">(45)广西壮族自治区</option><option value="46">(46)海南省</option><option value="50">(50)重庆市</option><option value="51">(51)四川省</option><option value="52">(52)贵州省</option><option value="53">(53)云南省</option><option value="54">(54)西藏自治区</option><option value="61">(61)陕西省</option><option value="62">(62)甘肃省</option><option value="63">(63)青海省</option><option value="64">(64)宁夏回族自治区</option><option value="65">(65)新疆维吾尔自治区</option></select>
+            <input class="ch-input acInput" id="dwmc" name="dwmc" type="text" placeholder="请输入单位名称" maxlength="40" value="" autocomplete="off">
+            <select class="ch-select" name="mldm" id="mldm" onchange="initYjxk();" style="width: 150px;"><option value="">--选择门类--</option><optgroup label="专业学位"><option value="zyxw">专业学位</option></optgroup><optgroup label="学术学位"><option value="01">(01)哲学</option><option value="02">(02)经济学</option><option value="03">(03)法学</option><option value="04">(04)教育学</option><option value="05">(05)文学</option><option value="06">(06)历史学</option><option value="07">(07)理学</option><option value="08">(08)工学</option><option value="09">(09)农学</option><option value="10">(10)医学</option><option value="11">(11)军事学</option><option value="12">(12)管理学</option><option value="13">(13)艺术学</option></optgroup></select>
+            <input type="hidden" name="mlmc" id="mlmc">
+
+            <span class="require-flag">*</span>
+            <select class="ch-select" name="yjxkdm" id="yjxkdm" onchange="initZy();" style="width: 150px;"><option value="">--选择学科类别--</option><option value="0201">(0201)理论经济学</option><option value="0202">(0202)应用经济学</option><option value="0270">(0270)统计学</option></select>
+            <span class="require-flag"></span>
+            <select name="zymc" id="zymc" class="ch-select" style="width: 180px;"><option value="">--选择专业--</option><option value="保险学">保险学</option><option value="财政学">财政学</option><option value="产业经济学">产业经济学</option><option value="城市经济学">城市经济学</option><option value="城市经济与管理">城市经济与管理</option><option value="城市与房地产经济学">城市与房地产经济学</option><option value="传媒经济学">传媒经济学</option><option value="大数据金融">大数据金融</option><option value="发展经济学">发展经济学</option><option value="法律经济学">法律经济学</option><option value="房地产经济学">房地产经济学</option><option value="房地产经济与管理">房地产经济与管理</option><option value="风险管理与精算">风险管理与精算</option><option value="公共经济与管理">公共经济与管理</option><option value="公共经济制度与政策">公共经济制度与政策</option><option value="管制经济学">管制经济学</option><option value="国防经济">国防经济</option><option value="国际金融学">国际金融学</option><option value="国际贸易学">国际贸易学</option><option value="国际文化贸易">国际文化贸易</option><option value="国民经济动员学">国民经济动员学</option><option value="国民经济学">国民经济学</option><option value="国土资源与生态经济学">国土资源与生态经济学</option><option value="合作经济">合作经济</option><option value="互联网金融">互联网金融</option><option value="互联网金融学">互联网金融学</option><option value="技术经济学">技术经济学</option><option value="健康经济学">健康经济学</option><option value="金融工程">金融工程</option><option value="金融工程学">金融工程学</option><option value="金融科技">金融科技</option><option value="金融贸易电子商务">金融贸易电子商务</option><option value="金融数学与金融工程">金融数学与金融工程</option><option value="金融学">金融学</option><option value="金融与风险统计">金融与风险统计</option><option value="精算学">精算学</option><option value="经济大数据分析">经济大数据分析</option><option value="经济数学">经济数学</option><option value="空间经济学">空间经济学</option><option value="劳动经济学">劳动经济学</option><option value="流通经济学">流通经济学</option><option value="流通经济与管理">流通经济与管理</option><option value="能源经济">能源经济</option><option value="能源经济学">能源经济学</option><option value="能源与气候经济">能源与气候经济</option><option value="农村经济学">农村经济学</option><option value="农业经济学">农业经济学</option><option value="区域经济学">区域经济学</option><option value="全球价值链">全球价值链</option><option value="全球经济治理">全球经济治理</option><option value="商务英语研究">商务英语研究</option><option value="商业大数据分析">商业大数据分析</option><option value="商业经济学">商业经济学</option><option value="数理金融学">数理金融学</option><option value="数量经济学">数量经济学</option><option value="税收学">税收学</option><option value="税务学">税务学</option><option value="统计学">统计学</option><option value="投资经济">投资经济</option><option value="投资经济学">投资经济学</option><option value="投资学">投资学</option><option value="消费经济学">消费经济学</option><option value="信用管理">信用管理</option><option value="应用经济学">应用经济学</option><option value="运输经济与物流">运输经济与物流</option><option value="政策性金融学">政策性金融学</option><option value="资源环境与循环经济">资源环境与循环经济</option><option value="自由贸易区理论与实务">自由贸易区理论与实务</option></select>
+<!--             <input class="ch-input" type="text" id="zymc" name="zymc" placeholder="请输入专业名称" maxlength="40"> -->
+            <select class="ch-select" name="xxfs">
+                <option value="" selected="">--选择学习方式--</option>
+                <option value="1">全日制</option>
+                <option value="2">非全日制</option>
+            </select>
+            <button class="blue-btn" type="submit" name="button" value="查询"></button>
+            </form>
+   </div>
+</body>
+</html>

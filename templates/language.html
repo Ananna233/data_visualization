@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{keyword|safe}}数据可视化</title>
+		<!-- 这个是提前引入的字体图标 -->
+		{% load static %}
+		<link rel="stylesheet" href="{% static "css/font-awesome.css" %}"/>
+		<link rel="stylesheet" href="{% static "css/style1.css" %}"/>
+		    <!-- 引入 ECharts 文件 -->
+		<script src="{% static "js/echarts.js" %}"></script>
+		<!-- ECharts词云图文件 -->
+		<script src="{% static "js/echarts-wordcloud.js" %}"></script>
+	</head>
+
+
+<body>
+<!-- 先来个大盒子 -->
+<div class="content">
+	<div class="mute">
+	<ul>
+		<li>
+			<img src="{% static "images/1.jpg" %}" alt="" />
+			<span>欢迎您! 管理员</span>
+		</li>
+
+		<li>
+			<a href="http://127.0.0.1:8000/index/">
+				<i class="fa fa-home"></i>
+				<span>首页</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="http://127.0.0.1:8000/analyse/pandect/">
+				<i class="fa fa-sitemap"></i>
+				<span>总览</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="http://127.0.0.1:8000/analyse/Java/">
+				<i class="fa fa-code"></i>
+				<span>Java</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/Python/">
+				<i class="fa fa-bug"></i>
+				<span>Python</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/C++/">
+				<i class="fa fa-terminal"></i>
+				<span>C++</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/PHP/">
+				<i class="fa fa-google-wallet"></i>
+				<span>PHP</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/NET/">
+				<i class="fa fa-windows"></i>
+				<span>.NET</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/Android/">
+				<i class="fa fa-android"></i>
+				<span>Android</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/AI/">
+				<i class="fa fa-modx"></i>
+				<span>人工智能</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="/analyse/Algorithm/">
+				<i class="fa fa-spinner"></i>
+				<span>算法工程师</span>
+			</a>
+		</li>
+
+		<!--<li>
+			<a href="http://127.0.0.1:8000/search/">
+				<i class="fa fa-search"></i>
+				<span>搜索查询</span>
+			</a>
+		</li>-->
+
+		<li>
+			<a href="{% static "data/data.csv" %}" download="data.csv">
+				<i class="fa fa-download"></i>
+				<span>数据下载</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="http://127.0.0.1:8000/Algorithm/">
+				<i class="fa fa-paper-plane"></i>
+				<span>call me</span>
+			</a>
+		</li>
+
+	</ul>
+</div>
+
+	<div class="tops">
+		{% if request.session.is_login %}
+
+        	<div class="login"><a href="/logout/">退出登录</a></div>
+        	<div class="login"><a href="#">当前在线:{{ request.session.user_name }}</a></div>
+        {% else %}
+        	<div class="login"><a href="/register/">注册</a></div>
+        	<div class="login"><a href="/login/">登录</a></div>
+
+        {% endif %}
+	</div>
+
+	<div class="visual">  <!--可视化-->
+		<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		<div class="main" id="main1"></div>
+		<div class="main" id="main2"></div>
+		<div class="main" id="main3"></div>
+			<!-- 表四 -->
+		<div class="main" id="main4"></div>
+		<div class="main" id="main5"></div>
+
+		<script type="text/javascript">
+			// 基于准备好的dom，初始化echarts实例
+			var keyword = {{keyword|safe}}
+
+			var city1 = {{city1|safe}}
+			var num1 = {{num1}}
+
+			var myChart1 = echarts.init(document.getElementById('main1'));  //此为图表1 各城市职位数 柱形图
+			var option1 = {
+				title: {
+					text: '城市职位需求',
+					subtext: ''
+				},
+				xAxis: {
+					type: 'category',
+					data: city1
+				},
+				yAxis: {
+					type: 'value'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				toolbox: {  // 工具栏
+					show: true,
+					feature: {
+						dataZoom: {
+							yAxisIndex: 'none'
+						},
+						dataView: {readOnly: false},
+						magicType: {type: ['line', 'bar']},
+						restore: {},
+						saveAsImage: {}
+					}
+				},
+				series: [{
+					name: '职位数',
+					data: num1,
+					type: 'bar',
+					showBackground: false,  // 柱形图 柱的背景色
+					backgroundStyle: {
+						color: 'rgba(180, 180, 180, 0.2)'
+					},
+					markPoint: {
+							data: [
+								{type: 'max', name: '最大值'},
+								{type: 'min', name: '最小值'}
+							]
+						},
+				}]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart1.setOption(option1);
+
+			// 表2
+			var myChart2 = echarts.init(document.getElementById('main2'));  //此为图表2 经验分布 饼状图
+			var exp2 = {{exp2|safe}}
+
+			var option2 = {
+			title: {
+					text: keyword+'经验分布',
+					subtext: ''  //这是小标题
+				},
+				legend: {
+					top: 'bottom'
+				},
+				toolbox: {
+					show: true,
+					feature: {
+						mark: {show: true},
+						dataView: {show: true, readOnly: false},
+						restore: {show: true},
+						saveAsImage: {show: true}
+					}
+				},
+				series: [
+					{
+						name: '工作经验',
+						type: 'pie',
+						radius: [30, 150],  //大小
+						center: ['50%', '50%'],  //位置
+						roseType: 'area',  //显示成南丁格尔图
+						itemStyle: {  // 圆角
+							borderRadius: 8
+						},
+						data: exp2,
+						selectedMode: 'single',  //点击选中弹出 single单个
+						label:{
+							show:true,
+							formatter: function(arg){
+								return arg.name + arg.value +'\n' + arg.percent + '%'}
+						},
+						tooltip:{  // 提示框!!
+							trigger: 'item'
+						}
+					}
+				]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart2.setOption(option2);
+
+			// 表3
+			var myChart3 = echarts.init(document.getElementById('main3'));  //此为图表3 学历分布 饼图
+			var edu3 = {{edu3|safe}}
+
+			var option3 = {
+				title: {
+					text: keyword+'学历分布',
+					subtext: ''
+				},
+				tooltip:{  // 提示框
+							trigger: 'item'
+						},
+				legend: {
+					//图例位置
+					bottom:"5%"
+				},
+				toolbox: {
+					show: true,
+					feature: {
+						mark: {show: true},
+						dataView: {show: true, readOnly: false},
+						restore: {show: true},
+						saveAsImage: {show: true}
+					}
+				},
+				series: [
+					{
+						name: '学历',
+						type: 'pie',
+						radius: ['40%', '70%'],
+						avoidLabelOverlap: false,
+						itemStyle: {
+							borderRadius: 10,
+							borderColor: '#fff',
+							borderWidth: 2
+						},
+						data: edu3,
+						minAngle:5,  // 最小扇区度数
+						emphasis: { // 中间圆环内区域显示
+							label: {
+								show: true,
+								fontSize: '20',
+								fontWeight: 'bold'
+							}
+						},
+						selectedMode: 'single',  //点击弹出
+						label:{
+							show:true,
+							formatter: function(arg){
+								return arg.name + arg.value +'\n' + arg.percent + '%'}
+						},
+
+					}
+				]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart3.setOption(option3);
+
+		// 图4 福利词云图
+		var myChart4 = echarts.init(document.getElementById('main4'));  //此为图4 福利词云图
+		var data4 ={{data4|safe}};
+		var option4 = {
+			title:{
+					text: keyword+'工作福利词云图',
+					subtext: ''
+			},
+			tooltip: {},
+			toolbox: {  // 工具栏
+				show: true,
+				feature: {
+					dataView: {readOnly: false},
+					restore: {},
+					saveAsImage: {}
+				}
+			},
+			series: [ {
+				name:'keyword			权重',
+				type: 'wordCloud',
+				gridSize: 2,
+				sizeRange: [12, 50],
+				rotationRange: [-90, 90],
+				shape: 'pentagon',
+				drawOutOfBound: true,
+				textStyle: {
+					color: function () {
+						return 'rgb(' + [
+							Math.round(Math.random() * 160),
+							Math.round(Math.random() * 160),
+							Math.round(Math.random() * 160)
+						].join(',') + ')';
+					}
+				},
+				emphasis: {
+					textStyle: {
+						shadowBlur: 10,
+						shadowColor: '#333'
+					}
+				},
+				data:data4
+			} ]
+		};
+
+		myChart4.setOption(option4);
+
+		window.onresize = myChart4.resize;
+
+		// 表5
+		var myChart5 = echarts.init(document.getElementById('main5'));  //此为图表1 各城市职位数 柱形图
+		var data5 = {{data5|safe}}
+		var option5 = {
+			title: {
+						text: keyword+'学历-经验-薪资分布',
+						subtext: '单位K/月'
+					},
+			legend: {//图例位置
+				bottom:"5%"
+			},
+			tooltip: {},
+			toolbox: { // 工具栏
+				show: true,
+				feature: {
+					dataZoom: {
+						yAxisIndex: 'none'  // 缩放
+					},
+					dataView: {readOnly: false},
+					magicType: {type: ['line', 'bar']},
+					restore: {},
+					saveAsImage: {}
+				}
+			},
+			dataset: {
+				source: data5
+			},
+			xAxis: {type: 'category',
+				"axisLabel":{//x轴全显示不隐藏
+				interval: 0
+			}
+			},
+			yAxis: {},
+			// Declare several bar series, each will be mapped
+			// to a column of dataset.source by default.
+			series: [
+				{type: 'bar'},
+				{type: 'bar'},
+				{type: 'bar'},
+				{type: 'bar'},
+				{type: 'bar'},
+				{type: 'bar'},
+				{type: 'bar'}
+			]
+		};
+
+		// 使用刚指定的配置项和数据显示图表。
+		myChart5.setOption(option5);
+		</script>
+
+
+	</div>   <!-- class="visual" -->
+
+</div>  <!-- class="content"大盒子 -->
+
+
+</body>
+</html>

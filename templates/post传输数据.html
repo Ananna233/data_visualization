@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#1、自己手动写HTML页面#}
+<form action="" method="post">
+    {% csrf_token %}
+    <p>姓名：<input type="text" name="name"></p>
+    <p>年龄：<input type="text" name="age"></p>
+    <p>工资：<input type="text" name="salary"></p>
+    <select name="city" style="width: 150px;height:30px;">
+                    <option type="text">选择城市</option>
+                    <option type="text">北京</option>
+    </select>
+    <input type="submit">
+</form>
+</body>
+</html>

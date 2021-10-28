@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<style>
+    div{
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+	<div>
+	    <form action="/register/index" method="post">
+	        <ul>
+	            <li>用户名：<input type="text" name="username"></li>
+	            <li>密&nbsp;&nbsp;码：<input type="password" name="password"></li>
+	            <li>确认密码：<input type="password" name="password1"></li>
+	            <li>性&nbsp;&nbsp;别：男<input type="checkbox" name="gender" id="1">&nbsp;&nbsp;&nbsp;&nbsp;
+	            						女<input type="checkbox" name="gender" id="2"></li>
+	            <li>手机号：<input type="text" name="telphone"></li>
+	            <li>邮&nbsp;&nbsp;箱：<input type="text" name="email"></li>
+	            <li>头&nbsp;&nbsp;像：<input type="file" name="image"></li>
+	            <li><input type="submit" value="提交"></li>
+	        </ul>
+	    </form>
+	</div>
+</body>
+</html>

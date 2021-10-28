@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    {% load static %}
+    <!-- 加载CSS -->
+    <!-- 通用css -->
+    <link rel="stylesheet" href="{% static "css/style_index.css" %}"/>
+    <!-- 总体分析CSS -->
+    <link rel="stylesheet" href="{% static "css/style_pandent.css" %}"/>
+    <!-- 加载jQuery 后面更改路劲 -->
+    <script type="text/javascript" src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+    <!-- 引入ECharts文件 -->
+    <script src="{% static "js/echarts.js" %}"></script>
+    <script type="text/javascript">
+        /* 当整个HTML文档加载完成后再执行此函数 */
+        $(function(){
+            //隐藏所有的子标题
+            $(".nav-menu").each(function(){
+                $(this).children(".nav-content").hide();
+            });
+
+            //给所有的菜单项主标题加事件
+            $(".nav-title").each(function(){
+                $(this).click(function(){
+                    //当我点击主标题时，展示其子标题
+                    //获取当前点击主标题下的子标题内容区
+                    var navConEle = $(this).parents(".nav-menu").children(".nav-content");
+                    //判断navConEle的display这个属性值是否为none
+                    if(navConEle.css("display")!="none"){
+                        //隐藏
+                        navConEle.hide(500);//单位ms
+                    }else{
+                        //展示
+                        navConEle.show(500);
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div class ="content">  <!-- 页面 -->
+
+        <div class="content-left">
+            <div class="left-title">
+                <a href="#">欢迎使用招聘信息分析系统</a>
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+            <!-- 菜单栏导航 -->
+            <div class="nav">
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">总体分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/job_city_num/">城市职位需求</a>
+                        <a href="/analyse/job_keyword/">职位方向需求</a>
+                        <a href="/analyse/job_exp/">工作经验分布</a>
+                        <a href="/analyse/job_edu/">学历水平分布</a>
+                        <a href="/analyse/job_city_money/">城市薪资水平</a>
+                        <a href="/analyse/job_edu_money/">学历-薪资关系</a>
+                        <a href="/analyse/job_exp_money/">工作经验-薪资关系</a>
+                        <a href="/analyse/job_wordcloud/">关键词词云图</a>
+                    </div>
+                </div>
+
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">互联网行业分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/Java/">Java</a>
+                        <a href="/analyse/Python/">Python</a>
+                        <a href="/analyse/C++/">C++</a>
+                        <a href="/analyse/PHP/">PHP</a>
+                        <a href="/analyse/NET/">.NET</a>
+                        <a href="/analyse/Android/">Android</a>
+                        <a href="/analyse/AI/">人工智能</a>
+                        <a href="/analyse/Algorithm/">算法工程师</a>
+                    </div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="/analyse/search2/" style="text-decoration:none;">自定义分析</a></div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                    </div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="{% static "data/data.csv" %}" download="data.csv" style="text-decoration:none;color:#696969;">数据下载</a></div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                    </div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="/analyse/feedback/" style="text-decoration:none;color:#696969;">反馈</a></div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                    </div>
+                </div>
+
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+        </div>
+
+        <div class="content-right">
+            <div class="tops">
+                {% if request.session.is_login %}
+
+                <div class="login"><a href="/logout/">退出登录</a></div>
+                <div class="login"><a href="#">当前在线:{{ request.session.user_name }}</a></div>
+                {% else %}
+                <div class="login"><a href="/register/">注册</a></div>
+                <div class="login"><a href="/login/">登录</a></div>
+                {% endif %}
+            </div>
+            <div class="visual">  <!-- 可视化 -->
+                <div class="title"><a>总体分析</a></div>
+                <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		        <div class="main" id="main3"></div>  <!-- 经验分布 -->
+                <script type="text/javascript">
+		            // 表3 main3 经验分布
+                    var myChart3 = echarts.init(document.getElementById('main3'));
+                    // 声明变量
+                    var data3 = {{data3|safe}}
+                    var pieData = data3
+                    // 指定图表的配置项和数据
+                    var option3 = {
+                        title: {
+                            text: '工作经验分布',
+                            subtext: ''
+                        },
+                        legend: {
+                        top: 'bottom'
+                            },
+                        toolbox: {  //工具栏
+                            show: true,
+                            feature: {
+                             mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                                }
+                            },
+                        series: [
+                            {
+                            name: '工作经验      职位数',
+                            type: 'pie',
+                            radius: [30, 150],  // 图像大小 30是内径  150外径
+                            center: ['50%', '50%'],  // 图像位置
+                            roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 8
+                                },
+
+                            data: pieData,  // 数据
+                                selectedMode: 'single',
+                                label:{
+                                show:true,
+                                formatter: function(arg){
+                                    return arg.name + arg.value +'\n' + arg.percent + '%'}
+                                },
+                                tooltip:{
+                                    trigger: 'item'
+                                }
+                            }
+
+                        ]
+                    };
+                    myChart3.setOption(option3);
+			</script>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

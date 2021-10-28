@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>总体分析</title>
+		<!-- 这个是提前引入的字体图标 -->
+		{% load static %}
+		<link rel="stylesheet" href="{% static "css/font-awesome.css" %}"/>
+		<link rel="stylesheet" href="{% static "css/style1.css" %}"/>
+		    <!-- 引入 ECharts 文件 -->
+		<script src="{% static "js/echarts.js" %}"></script>
+		<!-- ECharts词云图文件 -->
+		<script src="{% static "js/echarts-wordcloud.js" %}"></script>
+	</head>
+
+
+<body>
+<!-- 先来个大盒子 -->
+<div class="content">
+	<div class="mute">
+        <ul>
+            <li>
+                <img src="{%  static "/images/1.jpg" %}" alt="" />
+                <span>欢迎您! </span>
+            </li>
+
+            <li>
+                <a href="http://127.0.0.1:8000/index/">
+                    <i class="fa fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="http://127.0.0.1:8000/analyse/pandect/">
+                    <i class="fa fa-sitemap"></i>
+                    <span>总览</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="http://127.0.0.1:8000/analyse/Java/">
+                    <i class="fa fa-code"></i>
+                    <span>Java</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/Python/">
+                    <i class="fa fa-bug"></i>
+                    <span>Python</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/C++/">
+                    <i class="fa fa-terminal"></i>
+                    <span>C++</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/PHP/">
+                    <i class="fa fa-google-wallet"></i>
+                    <span>PHP</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/NET/">
+                    <i class="fa fa-windows"></i>
+                    <span>.NET</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/Android/">
+                    <i class="fa fa-android"></i>
+                    <span>Android</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/AI/">
+                    <i class="fa fa-modx"></i>
+                    <span>人工智能</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/analyse/Algorithm/">
+                    <i class="fa fa-spinner"></i>
+                    <span>算法工程师</span>
+                </a>
+            </li>
+
+            <!-- <li>
+                <a href="http://127.0.0.1:8000/search/">
+                    <i class="fa fa-search"></i>
+                    <span>搜索查询</span>
+                </a>
+            </li> -->
+
+            <li>
+                <a href="{% static "data/data.csv" %}" download="data.csv">
+                    <i class="fa fa-download"></i>
+                    <span>数据下载</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="http://127.0.0.1:8000/Algorithm/">
+                    <i class="fa fa-paper-plane"></i>
+                    <span>call me</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+	<div class="tops">
+		{% if request.session.is_login %}
+
+        	<div class="login"><a href="/logout/">退出登录</a></div>
+        	<div class="login"><a href="#">当前在线:{{ request.session.user_name }}</a></div>
+        {% else %}
+        	<div class="login"><a href="/register/">注册</a></div>
+        	<div class="login"><a href="/login/">登录</a></div>
+
+        {% endif %}
+	</div>
+
+	<div class="visual">  <!--可视化-->
+		<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		<div class="main" id="main1"></div>  <!-- 各城市职位数 -->
+		<div class="main" id="main2"></div>  <!-- 编程语言职位数 -->
+		<div class="main" id="main3"></div>  <!-- 经验分布 -->
+
+		<div class="main" id="main4"></div>  <!-- 学历分布 -->
+		<div class="main" id="main5"></div>  <!-- 各城市薪资水平 -->
+		<div class="main" id="main6"></div>  <!-- 学历-薪资水平对比 -->
+		<div class="main" id="main7"></div>  <!-- 工作经验-薪资水平对比 -->
+		<div class="main" id="main8"></div>  <!-- 关键词词云图 -->
+
+		<script type="text/javascript">
+		// main1 表1 各城市职位数
+			// 基于准备好的dom，初始化echarts实例
+			var myChart1 = echarts.init(document.getElementById('main1'));
+    		// 声明变量
+    		var city1 = {{city1|safe}}
+    		var data1 = {{data1|safe}}
+			// 指定图表的配置项和数据
+			var option1 = {
+				title: {
+					text: '各城市职位数',
+					subtext: '  单位/人'
+				},
+				tooltip: {},
+				toolbox: { // 工具栏
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'  //缩放
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+				legend: {
+					data:['职位数']
+				},
+				xAxis: {
+					data: city1  // x轴 城市
+				},
+				yAxis: {},
+				series: [{
+					name: '职位数',
+					type: 'bar',
+					data: data1  // y轴 数据
+				}]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart1.setOption(option1);
+
+		// 表2 main2 编程语言职位数
+			var myChart2 = echarts.init(document.getElementById('main2'));
+			// 声明变量
+			var name2 = {{name2|safe}}
+			var data2 = {{data2|safe}}
+			// 指定图表的配置项和数据
+			var option2 = {
+				title: {
+					text: '编程语言职位数',
+					subtext: '  单位/人'
+				},
+				tooltip: {},
+				toolbox: { // 工具栏
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'  //缩放
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+				legend: {
+					data:['职位数']
+				},
+				xAxis: {
+					data: name2,  // 变量 编程语言名字
+					"axisLabel":{
+						interval: 0
+						}
+				},
+				yAxis: {},
+				series: [{
+					name: '职位数',
+					type: 'bar',
+					data: data2 // 数据
+				}]
+			};
+			myChart2.setOption(option2);
+
+		// 表3 main3 经验分布
+			var myChart3 = echarts.init(document.getElementById('main3'));
+			// 声明变量
+			var data3 = {{data3|safe}}
+			var pieData = data3
+			// 指定图表的配置项和数据
+			var option3 = {
+			    title: {
+                    text: '工作经验分布',
+                    subtext: ''
+                },
+				legend: {
+				top: 'bottom'
+					},
+				toolbox: {  //工具栏
+					show: true,
+					feature: {
+					 mark: {show: true},
+					dataView: {show: true, readOnly: false},
+					restore: {show: true},
+					saveAsImage: {show: true}
+						}
+					},
+				series: [
+					{
+					name: '工作经验      职位数',
+					type: 'pie',
+					radius: [30, 150],  // 图像大小 30是内径  150外径
+					center: ['50%', '50%'],  // 图像位置
+					roseType: 'area',
+					itemStyle: {
+						borderRadius: 8
+						},
+
+					data: pieData,  // 数据
+						selectedMode: 'single',
+						label:{
+						show:true,
+						formatter: function(arg){
+							return arg.name + arg.value +'\n' + arg.percent + '%'}
+						},
+						tooltip:{
+							trigger: 'item'
+						}
+					}
+
+				]
+			};
+			myChart3.setOption(option3);
+
+		// 表4 main4 学历分布
+			var myChart4 = echarts.init(document.getElementById('main4'));
+			var data4 = {{data4|safe}}
+
+			// 指定图表的配置项和数据
+			var option4 = {
+                title: {
+                        text: '学历水平分布',
+                        subtext: ''
+                },
+				legend: {
+				top: 'bottom'
+					},
+				toolbox: {  //工具栏
+					show: true,
+					feature: {
+					 mark: {show: true},
+					dataView: {show: true, readOnly: false},
+					restore: {show: true},
+					saveAsImage: {show: true}
+						}
+					},
+				series: [
+					{
+					name: '学历     职位数',
+					type: 'pie',
+					radius: [30, 150],  // 图像大小 30是内径  150外径
+					center: ['50%', '50%'],  // 图像位置
+					roseType: 'area',
+					itemStyle: {
+						borderRadius: 8
+						},
+
+					data: data4,  // 数据
+						selectedMode: 'single',
+						label:{
+						show:true,
+						formatter: function(arg){
+							return arg.name + arg.value +'\n' + arg.percent + '%'}
+						},
+						tooltip:{
+							trigger: 'item'
+						}
+					}
+
+				]
+			};
+					// 使用刚指定的配置项和数据显示图表。
+			myChart4.setOption(option4);
+
+		// 表5 main5 各城市薪资水平
+			var myChart5 = echarts.init(document.getElementById('main5'));
+
+			// 指定图表的配置项和数据
+			var city5 = {{city5|safe}}
+			var floor5 = {{floor5}}
+			var upper5 = {{upper5}}
+			var option5 = {
+				title: {
+				text: '各城市薪资水平',
+				subtext: '单位K/月'
+				},
+				tooltip: {
+					trigger: 'axis'
+				},
+				legend: {
+					data: ['floor', 'upper']
+				},
+				toolbox: {
+					show: true,
+					feature: {
+					dataZoom: {
+                            yAxisIndex: 'none'  //缩放
+                        },
+					dataView: {show: true, readOnly: false},
+					magicType: {show: true, type: ['line', 'bar']},
+					restore: {show: true},
+					saveAsImage: {show: true}
+					}
+				},
+				calculable: true,
+				xAxis: [
+					{
+					type: 'category',
+					data: city5  //城市数据
+					}
+				],
+				yAxis: [
+					{
+					type: 'value'
+					}
+				],
+				series: [
+				{
+					name: 'floor',
+					type: 'bar',
+					data: floor5,  // 下限数据
+					markPoint: {
+					data: [
+						{type: 'max', name: '最大值'},
+						{type: 'min', name: '最小值'}
+					]
+					},
+					markLine: {
+						data: [
+							{type: 'average', name: '平均值'}
+						]
+					}
+					},
+					{
+					name: 'upper',
+					type: 'bar',
+					data: upper5,  // 上限数据
+					markPoint: {
+						data: [
+							{type: 'max', name: '最大值'},
+							{type: 'min', name: '最小值'}
+						]
+					},
+					markLine: {
+					data: [
+						{type: 'average', name: '平均值'}
+					]
+					}
+
+				}
+			]
+		};
+        myChart5.setOption(option5);
+
+		// 表6 main6 学历-薪资水平对比
+			var myChart6 = echarts.init(document.getElementById('main6'));
+			// 获取数据
+			var edu6 = {{edu6|safe}}
+			var moneyAvg6 = {{moneyAvg6}}  // 平均薪资
+			// 指定图表的配置项和数据
+			var option6 = {
+				title: {
+					text: '学历和薪资关系',
+					subtext: '          学历'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				toolbox: { // 工具栏
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'  //缩放
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+				legend: {
+					data: ['平均薪资 k/月']
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: {
+					type: 'value',
+					boundaryGap: [0, 0.01]
+				},
+				yAxis: {
+					type: 'category',
+					data: edu6  // 数据 学历水平
+				},
+				series: [
+					{
+						name: '平均薪资 k/月',
+						type: 'bar',
+						data: moneyAvg6,  // 数据 平均薪资
+						markPoint: {
+							data: [
+								{type: 'max', name: '最大值'},
+								{type: 'min', name: '最小值'}
+							]
+						},
+						markLine: {
+						data: [
+							{type: 'average', name: '平均值'}
+						],
+						}
+					},
+				]
+			};
+			myChart6.setOption(option6);
+
+		// 表7 main7 工作经验-薪资水平对比
+			var myChart7 = echarts.init(document.getElementById('main7'));
+			// 获取数据
+			var exp7 = {{exp7|safe}}
+			var moneyAvg7 = {{moneyAvg7}}  // 平均薪资
+			// 指定图表的配置项和数据
+			var option7 = {
+				title: {
+					text: '工作经验与薪资关系',
+					subtext: '单位K/月'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				legend: {
+					data: ['平均薪资 k/月']
+				},
+				toolbox: {
+					show: true,
+					feature: {
+					dataZoom: {
+                            yAxisIndex: 'none'  //缩放
+                        },
+					dataView: {show: true, readOnly: false},
+					magicType: {show: true, type: ['line', 'bar']},
+					restore: {show: true},
+					saveAsImage: {show: true}
+					}
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: {
+					type: 'category',
+					data: exp7  // 数据 工作经验
+				},
+				yAxis: {
+					type: 'value',
+					boundaryGap: [0, 0.01]
+				},
+				series: [
+					{
+						name: '平均薪资 k/月',
+						type: 'bar',
+						data: moneyAvg7,  // 数据 平均薪资
+						markPoint: {
+							data: [
+								{type: 'max', name: '最大值'},
+								{type: 'min', name: '最小值'}
+							]
+						},
+						markLine: {
+						data: [
+							{type: 'average', name: '平均值'}
+						],
+						}
+					},
+				]
+			};
+			myChart7.setOption(option7);
+	// 图8 关键词词云图8
+	var myChart8 = echarts.init(document.getElementById('main8'));  //此为图表8福利词云图
+		var data8 ={{data8|safe}};
+		var option8 = {
+			title:{
+					text:'关键词词云图',
+					subtext: ''
+			},
+			tooltip: {},
+			toolbox: {  // 工具栏
+                show: true,
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+			series: [ {
+				type: 'wordCloud',
+				gridSize: 2,
+				sizeRange: [15, 70],
+				rotationRange: [-90, 90],
+				shape: 'pentagon',
+				drawOutOfBound: true,
+				textStyle: {
+					color: function () {
+						return 'rgb(' + [
+							Math.round(Math.random() * 160),
+							Math.round(Math.random() * 160),
+							Math.round(Math.random() * 160)
+						].join(',') + ')';
+					}
+				},
+				emphasis: {
+					textStyle: {
+						shadowBlur: 10,
+						shadowColor: '#333'
+					}
+				},
+				data:data8
+			} ]
+		};
+
+		myChart8.setOption(option8);
+		window.onresize = myChart8.resize;
+
+		</script>
+
+
+	</div>   <!-- class="visual" -->
+
+</div>  <!-- class="content"大盒子 -->
+
+
+</body>
+</html>

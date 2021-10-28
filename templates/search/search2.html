@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    {% load static %}
+    <!-- 加载CSS -->
+    <!-- 通用css -->
+    <link rel="stylesheet" href="{% static "css/style_index.css" %}"/>
+    <!-- 互联网CSS -->
+    <link rel="stylesheet" href="{% static "css/style_internet.css" %}"/>
+    <!-- 加载jQuery 后面更改路劲 -->
+    <script type="text/javascript" src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+    <!-- 引入ECharts文件 -->
+    <script src="{% static "js/echarts.js" %}"></script>
+    <!-- ECharts词云图文件 -->
+    <script src="{% static "js/echarts-wordcloud.js" %}"></script>
+    <script type="text/javascript">
+        /* 当整个HTML文档加载完成后再执行此函数 */
+        $(function(){
+            //隐藏所有的子标题
+            $(".nav-menu").each(function(){
+                $(this).children(".nav-content").hide();
+            });
+
+            //给所有的菜单项主标题加事件
+            $(".nav-title").each(function(){
+                $(this).click(function(){
+                    //当我点击主标题时，展示其子标题
+                    //获取当前点击主标题下的子标题内容区
+                    var navConEle = $(this).parents(".nav-menu").children(".nav-content");
+                    //判断navConEle的display这个属性值是否为none
+                    if(navConEle.css("display")!="none"){
+                        //隐藏
+                        navConEle.hide(500);//单位ms
+                    }else{
+                        //展示
+                        navConEle.show(500);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        element.style {/*下拉列表的CSS*/
+            width: 150px;
+        }
+        .ch-select {/*下拉列表的CSS*/
+            box-sizing: border-box;
+            height: 40px;
+            line-height: 40px;
+            color: #666;
+            border: 1px solid #d6d6d6;
+            padding: 0 8px;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 0;
+            outline: 0;
+            background: #fff;
+        }
+        .ch-input { /* 输入框样式 */
+            box-sizing: border-box;
+            padding: 0 10px;
+            border: 1px solid #d6d6d6;
+            height: 40px;
+            line-height: 40px;
+            color: #666;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        .blue-btn { /* 查询按钮 */
+            box-sizing: border-box;
+            height: 40px;
+            line-height: 40px;
+            background: #1887e0;
+            border: 1px solid #1887e0;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            padding: 0 26px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class ="content">  <!-- 页面 -->
+
+        <div class="content-left">
+            <div class="left-title">
+                <a href="#">欢迎使用招聘信息分析系统</a>
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+            <!-- 菜单栏导航 -->
+            <div class="nav">
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">总体分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/job_city_num/">城市职位需求</a>
+                        <a href="/analyse/job_keyword/">职位方向需求</a>
+                        <a href="/analyse/job_exp/">工作经验分布</a>
+                        <a href="/analyse/job_edu/">学历水平分布</a>
+                        <a href="/analyse/job_city_money/">城市薪资水平</a>
+                        <a href="/analyse/job_edu_money/">学历-薪资关系</a>
+                        <a href="/analyse/job_exp_money/">工作经验-薪资关系</a>
+                        <a href="/analyse/job_wordcloud/">关键词词云图</a>
+                    </div>
+                </div>
+
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">互联网行业分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/Java/">Java</a>
+                        <a href="/analyse/Python/">Python</a>
+                        <a href="/analyse/C++/">C++</a>
+                        <a href="/analyse/PHP/">PHP</a>
+                        <a href="/analyse/NET/">.NET</a>
+                        <a href="/analyse/Android/">Android</a>
+                        <a href="/analyse/AI/">人工智能</a>
+                        <a href="/analyse/Algorithm/">算法工程师</a>
+                    </div>
+                </div>
+
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="/analyse/search2/" style="text-decoration:none;">自定义分析</a></div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="{% static "data/data.csv" %}" download="data.csv" style="text-decoration:none;color:#696969;">数据下载</a></div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title"><a href="/analyse/feedback/" style="text-decoration:none;color:#696969;">反馈</a></div>
+                </div>
+
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+        </div>
+
+        <div class="content-right" style="background-color:#FFFFFF;">
+            <div class="tops">
+                {% if request.session.is_login %}
+
+                <div class="login"><a href="/logout/">退出登录</a></div>
+                <div class="login"><a href="#">当前在线:{{ request.session.user_name }}</a></div>
+                {% else %}
+                <div class="login"><a href="/register/">注册</a></div>
+                <div class="login"><a href="/login/">登录</a></div>
+                {% endif %}
+            </div>
+            <div class="visual">  <!-- 可视化 -->
+                <div class="title"><a>自定义分析</a></div>
+
+                <div class="ch-filter">
+        <form name="form2" method="post" id="form2">
+            {% csrf_token %}
+            <select class="ch-select" name="job_business" id="ssdm" style="width: 150px;">
+                <option value="">--选择行业--</option>
+                <option type="text">互联网行业</option>
+            </select>
+            <select class="ch-select" name="job_keyword" id="mldm" style="width: 150px;">
+                <option value="">--选择方向--</option>
+                <option type="text">Java</option>
+                <option type="text">Python</option>
+                <option type="text">C++</option>
+                <option type="text">PHP</option>
+                <option type="text">.NET</option>
+                <option type="text">Android</option>
+                <option type="text">人工智能</option>
+                <option type="text">算法工程师</option>
+            </select>
+            <input type="hidden" name="mlmc" id="mlmc">
+
+            <select class="ch-select" name="job_city" id="yjxkdm" style="width: 150px;">
+                <option value="">--选择工作地点--</option>
+                <option type="text">北京</option>
+                <option type="text">上海</option>
+                <option type="text">广州</option>
+                <option type="text">深圳</option>
+                <option type="text">成都</option>
+                <option type="text">杭州</option>
+                <option type="text">重庆</option>
+                <option type="text">武汉</option>
+                <option type="text">东莞</option>
+                <option type="text">佛山</option>
+                <option type="text">合肥</option>
+                <option type="text">大连</option>
+                <option type="text">福州</option>
+                <option type="text">厦门</option>
+            </select>
+
+            <span class="require-flag"></span>
+            <select name="job_type" id="zymc" class="ch-select" style="width: 180px;">
+                <option value="">--选择工作类别--</option>
+                <option type="text">全职</option>
+                <option type="text">实习</option>
+                <option type="text">校园</option>
+            </select>
+
+            <select name="job_edu" id="zymc" class="ch-select" style="width: 180px;">
+                <option value="">--选择学历--</option>
+                <option type="text">博士</option>
+                <option type="text">硕士</option>
+                <option type="text">本科</option>
+                <option type="text">大专</option>
+                <option type="text">学历不限</option>
+            </select>
+
+           <select class="ch-select" name="job_exp">
+               <option value="">--选择工作经验--</option>
+               <option type="text">无经验</option>
+               <option type="text">经验不限</option>
+               <option type="text">1年以下</option>
+               <option type="text">1-3年</option>
+               <option type="text">3-5年</option>
+               <option type="text">5-10年</option>
+               <option type="text">10年以上</option>
+            </select>
+
+            <button class="blue-btn" type="submit" name="button" value="查询">查询</button>
+            </form>
+   </div>
+
+                <div class="main" id="main1"></div>
+                <div class="main" id="main2"></div>
+                <div class="main" id="main3"></div>
+                <div class="main" id="main4"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+
+                    var city1 = {{city1|safe}}
+                    var data1 = {{data1}}
+
+                    var myChart1 = echarts.init(document.getElementById('main1'));  //此为图表1 各城市职位数 柱形图
+                    var option1 = {
+                        title: {
+                            text: '薪资水平',
+                            subtext: '  K/月'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: city1
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        toolbox: {  // 工具栏
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                magicType: {type: ['line', 'bar']},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [{
+                            name: '职位数',
+                            data: data1,
+                            type: 'bar',
+                            showBackground: false,  // 柱形图 柱的背景色
+                            backgroundStyle: {
+                                color: 'rgba(180, 180, 180, 0.2)'
+                            },
+                            markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大值'},
+                                        {type: 'min', name: '最小值'}
+                                    ]
+                                },
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart1.setOption(option1);
+
+                    //表2
+                    var month2 = {{month2|safe}}
+                    var data2 = {{data2}}
+                    var myChart2 = echarts.init(document.getElementById('main2'));  //此为图表1 各城市职位数 柱形图
+                    var option2 = {
+                        title: {
+                            text: '职位数量',
+                            subtext: '  K/月'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: month2
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        toolbox: {  // 工具栏
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                magicType: {type: ['line', 'bar']},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [{
+                            name: '职位数',
+                            data: data2,
+                            type: 'bar',
+                            showBackground: false,  // 柱形图 柱的背景色
+                            backgroundStyle: {
+                                color: 'rgba(180, 180, 180, 0.2)'
+                            },
+                            markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大值'},
+                                        {type: 'min', name: '最小值'}
+                                    ]
+                                },
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart2.setOption(option2);
+
+                    // 图3 福利词云图
+                    var myChart3 = echarts.init(document.getElementById('main3'));  //此为图4 福利词云图
+                    var data3 ={{data3|safe}};
+                    var option3 = {
+                        title:{
+                                text: '工作福利词云图',
+                                subtext: ''
+                        },
+                        tooltip: {},
+                        toolbox: {  // 工具栏
+                            show: true,
+                            feature: {
+                                dataView: {readOnly: false},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [ {
+                            name:'keyword			权重',
+                            type: 'wordCloud',
+                            gridSize: 2,
+                            sizeRange: [12, 50],
+                            rotationRange: [-90, 90],
+                            shape: 'pentagon',
+                            drawOutOfBound: true,
+                            textStyle: {
+                                color: function () {
+                                    return 'rgb(' + [
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160)
+                                    ].join(',') + ')';
+                                }
+                            },
+                            emphasis: {
+                                textStyle: {
+                                    shadowBlur: 10,
+                                    shadowColor: '#333'
+                                }
+                            },
+                            data:data3
+                        } ]
+                    };
+
+                    myChart3.setOption(option3);
+
+                    window.onresize = myChart3.resize;
+
+                    // 表4
+                    var myChart4 = echarts.init(document.getElementById('main4'));  //此为图表1 各城市职位数 柱形图
+                    var data4 = {{data4|safe}}
+                    var option4 = {
+                        title: {
+                                    text:'学历-经验-薪资分布',
+                                    subtext: '单位K/月'
+                                },
+                        legend: {//图例位置
+                            bottom:"5%"
+                        },
+                        tooltip: {},
+                        toolbox: { // 工具栏
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    yAxisIndex: 'none'  // 缩放
+                                },
+                                dataView: {readOnly: false},
+                                magicType: {type: ['line', 'bar']},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        dataset: {
+                            source: data4
+                        },
+                        xAxis: {type: 'category',
+                            "axisLabel":{//x轴全显示不隐藏
+                            interval: 0
+                        }
+                        },
+                        yAxis: {},
+                        // Declare several bar series, each will be mapped
+                        // to a column of dataset.source by default.
+                        series: [
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'}
+                        ]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart4.setOption(option4);
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

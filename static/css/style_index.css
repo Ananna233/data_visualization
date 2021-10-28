@@ -1,0 +1,141 @@
+/* 兼容浏览器 */
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.content{
+    width: 100%;
+    height:100%;
+}
+
+.content-left{
+    width: 15%;
+    height: 800px;
+    background-color:  #2a3f54;
+    float: left;
+}
+
+.content-right{
+    width: 85%;
+    height: 800px;
+    background-color: #F5F5F5;
+    float: right;
+}
+.left-title{
+    height: 50px;
+    width: 100%;
+
+}
+.left-title>a{/* left-title下的a标签*/
+    display: block;
+    width: 100%;
+    height: 50px;
+    /* 垂直居中 */
+    line-height: 50px;
+    /* 水平居中 */
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+
+/* 分割线样式*/
+.seg{
+    height:1px;
+    width:100%;
+    background-color:black;
+}
+
+.nav{
+    margin:5px 0px;
+}
+
+/* 菜单项主标题 */
+.nav-title{
+    height:40px;
+    width:100%;
+    color:white;
+    /* 水平居中 */
+    text-align:center;
+    /* 垂直居中 */
+    line-height:40px;
+    /* 鼠标手型 */
+    cursor:pointer;
+    /* 边框 */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* 圆角 */
+    background-color:#FFFFE0;
+    color:#696969;
+    text-decoration:none;
+}
+
+.nav-title>a{
+    text-decoration:none;
+}
+
+/* 子标题内容区 */
+.nav-content{
+    width:100%;
+    height:100%;
+    background-color:#0c1119;
+
+}
+
+.nav-content>a{
+    display:block;
+    height:30px;
+    width:100%;
+    color:#CCCCCC;
+    text-decoration:none;
+    /* 水平居中 */
+    text-align:center;
+    /* 垂直居中 */
+    line-height:30px;
+    font-size:14px;
+}
+
+.nav-content>a:hover{
+    display:block;
+    height:30px;
+    width:100%;
+    color:#FFFFFF;
+    text-decoration:none;
+    /* 水平居中 */
+    text-align:center;
+    /* 垂直居中 */
+    line-height:30px;
+    background-color:#12040C;
+
+}
+
+.tops{  /* 头部 */
+	top: 0;
+	width: 100%;
+	height: 43px;
+	font-size: 30px;
+	color: #5a738e;
+	background-color: #ededed;
+	border: 1px solid #d9dee4;
+	/* 鼠标移入变小手 */
+	cursor: pointer;
+}
+
+.tops .login{
+    float:right;
+    right:50px;
+    margin:0px 10px;
+    /* 水平居中 */
+    text-align:center;
+    /* 垂直居中 */
+    line-height:43px;
+}
+.tops .login a{
+    display:block;
+    font-size: 15px;
+    color:#777;
+    text-decoration:none;
+}
+
+.tops a:hover{
+    color:#000;
+}

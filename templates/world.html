@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>app 测试</title>
+</head>
+<body>
+<h1>张三</h1>
+<a>{{data|safe}}</a>
+<a href="E:\Python\02-爬虫\数据文件\原始数据\zhaopinPHP.csv" download="zhaopinPHP.csv">数据下载</a>
+{% load static %}
+<a href="{% static "data/data.txt" %}" download="data.txt">数据下载</a>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    {% load static %}
+    <!-- 加载CSS -->
+    <!-- 通用css -->
+    <link rel="stylesheet" href="{% static "css/style_index.css" %}"/>
+    <!-- 互联网CSS -->
+    <link rel="stylesheet" href="{% static "css/style_internet.css" %}"/>
+    <!-- 加载jQuery 后面更改路劲 -->
+    <script type="text/javascript" src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+    <!-- 引入ECharts文件 -->
+    <script src="{% static "js/echarts.js" %}"></script>
+    <!-- ECharts词云图文件 -->
+    <script src="{% static "js/echarts-wordcloud.js" %}"></script>
+    <script type="text/javascript">
+        /* 当整个HTML文档加载完成后再执行此函数 */
+        $(function(){
+            //隐藏所有的子标题
+            $(".nav-menu").each(function(){
+                $(this).children(".nav-content").hide();
+            });
+
+            //给所有的菜单项主标题加事件
+            $(".nav-title").each(function(){
+                $(this).click(function(){
+                    //当我点击主标题时，展示其子标题
+                    //获取当前点击主标题下的子标题内容区
+                    var navConEle = $(this).parents(".nav-menu").children(".nav-content");
+                    //判断navConEle的display这个属性值是否为none
+                    if(navConEle.css("display")!="none"){
+                        //隐藏
+                        navConEle.hide(500);//单位ms
+                    }else{
+                        //展示
+                        navConEle.show(500);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+        .zsml-form table td {
+            padding: 10px 5px;
+        }
+
+        td[Attributes Style] {
+            text-align: -webkit-right;
+        }
+
+        td {
+            display: table-cell;
+            vertical-align: inherit;
+        }
+
+        .zsml-form .ch-input, .zsml-form .ch-select {
+            width: 220px;
+        }
+        .ch-select {
+            box-sizing: border-box;
+            height: 40px;
+            line-height: 40px;
+            color: #666;
+            border: 1px solid #d6d6d6;
+            padding: 0 8px;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 0;
+            outline: 0;
+            background: #fff;
+        }
+        .ch-input {/* 招生单位*/
+            box-sizing: border-box;
+            padding: 0 10px;
+            border: 1px solid #d6d6d6;
+            height: 40px;
+            line-height: 40px;
+            color: #666;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .ch-btn.ch-btn-big {  /*查询按钮*/
+            height: 40px;
+            line-height: 40px;
+            padding: 0 24px;
+            font-size: 16px;
+
+        }
+
+        .ch-btn {
+            display: inline-block;
+            width: auto;
+            border: none;
+            border-radius: 2px;
+            background: #1787e0;
+            color: #fff;
+            vertical-align: middle;
+            outline: 0;
+            cursor: pointer;
+            overflow: visible;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class ="content">  <!-- 页面 -->
+
+        <div class="content-left">
+            <div class="left-title">
+                <a href="#">欢迎使用招聘信息分析系统</a>
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+            <!-- 菜单栏导航 -->
+            <div class="nav">
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">总体分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/job_city_num/">城市职位需求</a>
+                        <a href="/analyse/job_keyword/">职位方向需求</a>
+                        <a href="/analyse/job_exp/">工作经验分布</a>
+                        <a href="/analyse/job_edu/">学历水平分布</a>
+                        <a href="/analyse/job_city_money/">城市薪资水平</a>
+                        <a href="/analyse/job_edu_money/">学历-薪资关系</a>
+                        <a href="/analyse/job_exp_money/">工作经验-薪资关系</a>
+                        <a href="/analyse/job_wordcloud/">关键词词云图</a>
+                    </div>
+                </div>
+
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">互联网行业分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="/analyse/Java/">Java</a>
+                        <a href="/analyse/Python/">Python</a>
+                        <a href="/analyse/C++/">C++</a>
+                        <a href="/analyse/PHP/">PHP</a>
+                        <a href="/analyse/NET/">.NET</a>
+                        <a href="/analyse/Android/">Android</a>
+                        <a href="/analyse/AI/">人工智能</a>
+                        <a href="/analyse/Algorithm/">算法工程师</a>
+                    </div>
+                </div>
+
+                <!-- 每个菜单栏项 -->
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">泪目管理</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="#">泪目列表</a>
+                        <a href="#">添加泪目</a>
+                    </div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">自定义分析</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="#">查询</a>
+                    </div>
+                </div>
+
+                <div class="nav-menu">
+                    <!-- 主标题 -->
+                    <div class="nav-title">了解更多</div>
+                    <!-- 副标题 -->
+                    <div class="nav-content">
+                        <a href="{% static "data/data.csv" %}" download="data.csv">数据下载</a>
+                        <a href="#">反馈</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="seg"></div>  <!-- 分割线 -->
+        </div>
+
+        <div class="content-right">
+            <div class="tops">
+                {% if request.session.is_login %}
+
+                <div class="login"><a href="/logout/">退出登录</a></div>
+                <div class="login"><a href="#">当前在线:{{ request.session.user_name }}</a></div>
+                {% else %}
+                <div class="login"><a href="/register/">注册</a></div>
+                <div class="login"><a href="/login/">登录</a></div>
+                {% endif %}
+            </div>
+            <div class="visual">  <!-- 可视化 -->
+                <div class="title"><a>自定义分析</a></div>
+
+                <div class="zsml-form">
+      <form name="form2" method="post" id="form2">
+          {% csrf_token %}
+        <table border="0" cellspacing="0" cellpadding="0">
+        <colgroup>
+          <col width="120">
+          <col width="260">
+          <col width="120">
+          <col width="260">
+        </colgroup>
+            <tbody>
+              <tr>
+                <td align="right"><label>行业</label></td>
+                <td align="left">
+                  <select name="job_business" id="ssdm" class="ch-select">
+                      <option value="">--选择行业--</option>
+                      <option type="text">互联网行业</option>
+                  </select>
+                </td>
+
+                <td align="right"><label>方向</label></td>
+                <td align="left">
+                <select name="job_keyword" id="ssdm" class="ch-select">
+                      <option value="">--选择方向--</option>
+                      <option type="text">Java</option>
+                      <option type="text">Python</option>
+                      <option type="text">C++</option>
+                      <option type="text">PHP</option>
+                      <option type="text">.NET</option>
+                      <option type="text">Android</option>
+                      <option type="text">人工智能</option>
+                      <option type="text">算法工程师</option>
+                  </select>
+                </td>
+
+              </tr>
+              <tr>
+                <td align="right"><label>工作地点</label></td>
+                <td align="left">
+                <select name="job_city" id="mldm" class="ch-select">
+                    <option value="">--选择工作地点--</option>
+                    <option type="text">北京</option>
+                    <option type="text">上海</option>
+                    <option type="text">广州</option>
+                    <option type="text">深圳</option>
+                    <option type="text">成都</option>
+                    <option type="text">杭州</option>
+                    <option type="text">重庆</option>
+                    <option type="text">武汉</option>
+                    <option type="text">东莞</option>
+                    <option type="text">佛山</option>
+                    <option type="text">合肥</option>
+                    <option type="text">大连</option>
+                    <option type="text">福州</option>
+                    <option type="text">厦门</option>
+                </select>
+                </td>
+                <td align="right">
+                 <label id="xklbstr">工作类型</label></td>
+                <td align="left">
+                <select name="job_type" id="yjxkdm" class="ch-select">
+                    <option value="">--选择工作类别--</option>
+                    <option type="text">全职</option>
+                    <option type="text">实习</option>
+                    <option type="text">校园</option>
+                </select>
+                </td>
+              </tr>
+              <tr>
+              <td align="right"><label>学历</label></td>
+                 <td align="left">
+                <select name="job_edu" id="zymc" class="ch-select">
+                    <option value="">--选择学历--</option>
+                    <option type="text">博士</option>
+                    <option type="text">硕士</option>
+                    <option type="text">本科</option>
+                    <option type="text">大专</option>
+                    <option type="text">学历不限</option>
+                </select>
+                  </td>
+                  <td align="right">
+                <span class="zsml-required"></span>
+                 <label>工作经验</label></td>
+                <td align="left">
+                  <select name="job_exp" id="xxfs" class="ch-select">
+                    <option value="">--选择工作经验--</option>
+                    <option type="text">无经验</option>
+                    <option type="text">经验不限</option>
+                    <option type="text">1年以下</option>
+                    <option type="text">1-3年</option>
+                    <option type="text">3-5年</option>
+                    <option type="text">5-10年</option>
+                    <option type="text">10年以上</option>
+                  </select>
+                </td>
+              </tr>
+
+               <tr>
+              <td class="text_center" colspan="4" style="text-align:center;"><input type="submit" name="button" class="ch-btn ch-btn-big" value="查询"></td>
+              </tr>
+
+            </tbody>
+        </table>
+       </form>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
