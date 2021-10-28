@@ -77,7 +77,7 @@ def login(request):
 
 def register(request):
     if request.session.get('is_login', None):
-        # 登录状态不允许注册。你可以修改这条原则！
+        # 登录状态不允许注册。
         return redirect("/index/")
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST)
@@ -121,7 +121,7 @@ def register(request):
 
 def logout(request):
     if not request.session.get('is_login', None):
-        # 如果本来就未登录，也就没有登出一说
+        # 如果本来就未登录
         return redirect("/index/")
     request.session.flush()
     # 或者使用下面的方法
